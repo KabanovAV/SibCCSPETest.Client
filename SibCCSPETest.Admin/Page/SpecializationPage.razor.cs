@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using SibCCSPETest.Data;
 using SibCCSPETest.ServiceBase;
 using SibCCSPETest.Shared.Components;
@@ -11,9 +10,12 @@ namespace SibCCSPETest.Admin.Page
         [Inject]
         public IAPIService? ServiceAPI { get; set; }
 
-        private NexusTableGrid<Specialization>? NexusTable;
+        private NexusTableGrid<SpecializationDTO>? NexusTable;
         private NexusTableGridEditMode EditMode = NexusTableGridEditMode.Single;
         private NexusTableGridSelectionMode SelectMode = NexusTableGridSelectionMode.Single;
+
+        private List<SpecializationDTO> Specializations = [];
+        private SpecializationDTO Specialization = new();
 
         public bool IsCrud => NexusTable != null
             && (NexusTable.InsertItem.Count > 0 || NexusTable.EditedItem.Count > 0);
@@ -27,11 +29,11 @@ namespace SibCCSPETest.Admin.Page
         private async Task LoadData()
         {
             var s = await ServiceAPI.SpecializationService.GetAllSpecialization();
-            specializations = s.ToList();
+            Specializations = s.ToList();
         }
 
         public void InserRow()
-            => NexusTable.InsertRow(new Specialization());
+            => NexusTable.InsertRow(new SpecializationDTO());
 
         public void EditRow()
         {
@@ -47,30 +49,30 @@ namespace SibCCSPETest.Admin.Page
                 }
                 else
                 {
-                    var editRow = NexusTable.SelectedRows.First();
-                    NexusTable.EditRow(editRow);
+                    Specialization = NexusTable.SelectedRows.First();
+                    NexusTable.EditRow(Specialization);
                 }
             }
         }
 
         public async Task Save()
         {
-            var specialization = NexusTable.EditedItem.First();
-            if (specialization.Id != 0)
-                await Update(specialization);
+            Specialization = NexusTable.EditedItem.First();
+            if (Specialization.Id != 0)
+                await Update(Specialization);
             else
-                await Add(specialization);
-            NexusTable.CancelEditRow(specialization);
+                await Add(Specialization);
+            NexusTable.CancelEditRow(Specialization);
         }
 
-        public async Task Add(Specialization item)
+        public async Task Add(SpecializationDTO item)
         {
-            Specialization specialization = await ServiceAPI.SpecializationService.AddSpecialization(item);
-            NexusTable.Data.Add(specialization);
-            await NexusTable.SelectRow(specialization);
+            Specialization = await ServiceAPI.SpecializationService.AddSpecialization(item);
+            NexusTable.Data.Add(Specialization);
+            await NexusTable.SelectRow(Specialization);
         }
 
-        public async Task Update(Specialization item)
+        public async Task Update(SpecializationDTO item)
         {
             await ServiceAPI.SpecializationService.UpdateSpecialization(item);
         }
@@ -79,9 +81,9 @@ namespace SibCCSPETest.Admin.Page
         {
             if (NexusTable != null && NexusTable.SelectedRows.Count != 0)
             {
-                var delete = NexusTable.SelectedRows.First();
-                await ServiceAPI.SpecializationService.DeleteSpecialization(delete.Id);
-                NexusTable.RemoveRow(delete);
+                Specialization = NexusTable.SelectedRows.First();
+                await ServiceAPI.SpecializationService.DeleteSpecialization(Specialization.Id);
+                NexusTable.RemoveRow(Specialization);
             }
         }
 
@@ -89,90 +91,6 @@ namespace SibCCSPETest.Admin.Page
         {
             var cancelRow = NexusTable.SelectedRows.First();
             NexusTable.CancelEditRow(cancelRow);
-        }
-
-        private bool _isCellEditMode;
-        List<Specialization> specializations = [];
-        Specialization specialization = new();
-        private string searchString = "";
-        private Specialization elementBeforeEdit;
-        private Specialization selectedItem1 = null;
-
-        private bool loading;
-        public bool Loading
-        {
-            get => loading;
-            set => loading = specializations == null ? true : false;
-        }
-
-
-
-        async Task<TableData<Specialization>> LoadServerData(TableState state, CancellationToken token)
-        {
-            IEnumerable<Specialization> data = await ServiceAPI.SpecializationService.GetAllSpecialization();
-            return new TableData<Specialization>() { Items = data };
-        }
-
-
-
-        private void BackupItem(object element)
-        {
-            elementBeforeEdit = new()
-            {
-                Id = ((Specialization)element).Id,
-                Title = ((Specialization)element).Title
-            };
-        }
-        private void ResetItemToOriginalValues(object element)
-        {
-            ((Specialization)element).Id = elementBeforeEdit.Id;
-            ((Specialization)element).Title = elementBeforeEdit.Title;
-        }
-
-        public void ClickEvent(object element)
-            => Console.WriteLine("It's what I want!");
-
-        private async Task AddItem()
-        {
-            specialization = new() { Id = specializations.Count + 1, Title = "Item" };
-            specializations.Insert(0, specialization);
-            //_table.SetEditingItem(specialization);
-            await InvokeAsync(StateHasChanged);
-        }
-        private void AddNewEmployee()
-        {
-            // Создаем новую временную запись
-            specialization = new() { Id = 0, Title = "Item" };
-
-            // Добавляем в начало списка
-            specializations.Insert(0, specialization);
-            StateHasChanged();
-            // Активируем режим редактирования
-            //_table.SetEditingItem(specialization);
-
-        }
-
-        private void EditEmployee(Specialization employee)
-        {
-            //BackupItem(employee);
-            //_table.SetEditingItem(employee);
-            //_table.ReloadServerData();
-        }
-
-        private void SaveEmployee(Specialization employee)
-        {
-
-
-        }
-
-        private void CancelEdit(Specialization employee)
-        {
-            specializations.Remove(employee);
-        }
-
-        private void DeleteEmployee(Specialization employee)
-        {
-            specializations.Remove(employee);
         }
     }
 }
