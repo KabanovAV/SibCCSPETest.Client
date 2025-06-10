@@ -15,7 +15,7 @@ namespace SibCCSPETest.Admin.Page
         private NexusTableGridSelectionMode SelectMode = NexusTableGridSelectionMode.Single;
 
         private List<SpecializationDTO> Specializations = [];
-        private SpecializationDTO Specialization = new();
+        private SpecializationDTO? Specialization = new();
 
         public bool IsCrud => NexusTable != null
             && (NexusTable.InsertItem.Count > 0 || NexusTable.EditedItem.Count > 0);
@@ -28,12 +28,12 @@ namespace SibCCSPETest.Admin.Page
 
         private async Task LoadData()
         {
-            var s = await ServiceAPI.SpecializationService.GetAllSpecialization();
+            var s = await ServiceAPI!.SpecializationService.GetAllSpecialization();
             Specializations = s.ToList();
         }
 
-        public void InserRow()
-            => NexusTable.InsertRow(new SpecializationDTO());
+        public async Task InserRow()
+            => await NexusTable!.InsertRow(new SpecializationDTO());
 
         public void EditRow()
         {
@@ -57,7 +57,7 @@ namespace SibCCSPETest.Admin.Page
 
         public async Task Save()
         {
-            Specialization = NexusTable.EditedItem.First();
+            Specialization = NexusTable!.EditedItem.First();
             if (Specialization.Id != 0)
                 await Update(Specialization);
             else
@@ -67,14 +67,17 @@ namespace SibCCSPETest.Admin.Page
 
         public async Task Add(SpecializationDTO item)
         {
-            Specialization = await ServiceAPI.SpecializationService.AddSpecialization(item);
-            NexusTable.Data.Add(Specialization);
-            await NexusTable.SelectRow(Specialization);
+            Specialization = await ServiceAPI!.SpecializationService.AddSpecialization(item);
+            if (Specialization != null)
+            {
+                NexusTable!.Data.Add(Specialization);
+                await NexusTable.SelectRow(Specialization);
+            }
         }
 
         public async Task Update(SpecializationDTO item)
         {
-            await ServiceAPI.SpecializationService.UpdateSpecialization(item);
+            await ServiceAPI!.SpecializationService.UpdateSpecialization(item);
         }
 
         public async Task Delete()
@@ -82,15 +85,15 @@ namespace SibCCSPETest.Admin.Page
             if (NexusTable != null && NexusTable.SelectedRows.Count != 0)
             {
                 Specialization = NexusTable.SelectedRows.First();
-                await ServiceAPI.SpecializationService.DeleteSpecialization(Specialization.Id);
+                await ServiceAPI!.SpecializationService.DeleteSpecialization(Specialization.Id);
                 NexusTable.RemoveRow(Specialization);
             }
         }
 
         public void Cancel()
         {
-            var cancelRow = NexusTable.SelectedRows.First();
-            NexusTable.CancelEditRow(cancelRow);
+            Specialization = NexusTable!.SelectedRows.First();
+            NexusTable.CancelEditRow(Specialization);
         }
     }
 }
