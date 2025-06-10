@@ -1,0 +1,55 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject NavigationManager NavManager
+
+<PageTitle>Applications</PageTitle>
+
+<div class="container px-4 py-5">
+    <h2 class="pb-2 border-bottom">Приложения</h2>
+    <div class="row m-1">
+        <div class="col">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-md-3 d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient border-end rounded-start fs-1 p-1 m-0">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">Администратор</h5>
+                            <p class="card-text">Админская часть приложения предназначенна для работы(создание, изменение и удаление) с группами и пользователями, а так же работа с темами и вопросами.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary w-100" @onclick=@(() => OpenApp("admin"))>Перейти</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-1">
+        <div class="col">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-md-3 d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient border-end rounded-start fs-1 p-1 m-0">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">Пользователи</h5>
+                            <p class="card-text">Пользовательская часть приложения предназначенна для прохождения тестов и просмотра результата пройденного теста.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary w-100" @onclick=@(() => OpenApp("user"))>Перейти</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    void OpenApp(string url)
+        => NavManager.NavigateTo($"/{url}");
+}

@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="8.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SibCCSPETest.ServiceBase\SibCCSPETest.ServiceBase.Server\SibCCSPETest.ServiceBase.Server.csproj" />
+    <ProjectReference Include="..\SibCCSPETest.Shared\SibCCSPETest.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SibCCSPETest.Data.Interop">
+      <HintPath>..\..\SibCCSPETest.Data\SibCCSPETest.Data.Interop\bin\Debug\net8.0\SibCCSPETest.Data.Interop.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

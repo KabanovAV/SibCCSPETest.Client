@@ -1,0 +1,62 @@
+:root {
+    /* Цвет фона страницы */
+    --color-whitecold: #FAFCFF;
+    /* Цвет фона элемента (модального окна, ленты команд)  */
+    --color-white: #FEFFFD;
+    /*  Цает текста основной */
+    --color-black: #000810;
+    /* Сплиттер drag */
+    --color-black-light: #A0A0A8;
+    /* Сплиттер hover*/
+    --color-black-lightest: #C6C8CA;
+    /* Фон шапки и подвала модальных окон, всплывающих подсказок, выпадающих списков  */
+    --color-light-gray: #DADCD4;
+    /* Фон кнопки, расположенной на окне при наведении курсора мыши, фон элемента списка под курсором мыши */
+    --color-lightest-gray: #EEEFED;
+    /* Цвет текста ошибки */
+    --color-red-soft: #F0383F;
+    /* Цвет текста тнформации */
+    --color-blue-soft: #383АА0;
+    /* Цвет текста предупреждения */
+    --color-orange-dark: #B04000;
+    /* Цвет текста внимание */
+    --color-yellow-dark: #A08000;
+    /* Фон выделенного элемента списка */
+    --color-lightest-green: #E6F8E7;
+    /* Бордюр выделенного элемента списка когда окно с компонентом в фокусе */
+    --color-light-green: #A6D8B7;
+    /* Бордюр выделенного элемента списка когда окно с компонентом в фокусе */
+    --color-dark-green: #66A887;
+    /* Фон дополнительного загловка списка, информационной строки */
+    --color-light-gray-blued: #E3E4E8;
+    --color-blue-medium: #0080D0;
+    --color-gray-blued: #98B0C0;
+    /* */
+    --color-whitewarm: #FAFCF4;
+    --color-blue-light: #A0D0F0;
+    --color-blue-lightest: #F6F8FF;
+    --color-blue-grayed: #406080;
+    --color-blue-medium-transp: rgba(0, 128, 192, 0.1);
+    --color-blue-dark: #0060A0;
+    --color-yellow-light: #F8F8A0;
+    --color-yellow-medium: #F8F880;
+    --color-rose: #FFAFB8;
+    /* BABCB4 #AAACA4 --color-black-light */
+    --color-black-medium: #707070;
+    --color-gray-transp: rgba(0, 16, 32, 0.2);
+    /* fonts */
+    --font-links: normal 1.2rem Play, sans-serif;
+    --font-header: bold 1.2rem Comfortaa, sans-serif;
+    --font-header1: 400 1.3rem Scada, sans-serif;
+    --font-text: normal 1rem Roboto, sans-serif;
+    --font-text-long: normal 1rem Merriweather, sans-serif;
+    --font-quote: normal italic 1rem Montserrat, sans-serif;
+    /* elements colors */
+    --color-bg-selected: var(--color-lightest-green);
+    --color-bg-window: var(--color-whitecold);
+    --color-bg-list: var(--color-white);
+    --color-bg-tabs-header: var(--color-light-gray-blued);
+    --color-bg-hover: var(--color-lightest-gray);
+    --color-font-main: black;
+    --color-border-noncontrast: var(--color-black-light);
+}

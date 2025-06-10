@@ -1,0 +1,44 @@
+﻿@namespace SibCCSPETest.Shared.Components
+@attribute [CascadingTypeParameter(nameof(TItem))]
+@typeparam TItem
+
+<div class="table-container">
+    @if (Items != null)
+    {
+        <CascadingValue Value=this>
+            @Columns
+        </CascadingValue>
+    }
+
+    @ToolTemplate
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                @foreach (var item in _items)
+                {
+                    <th scope="col">@item.Title</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Data.Concat(InsertItem))
+            {
+                <tr @onclick="() => SelectRow(item)" class="@(SelectedRows.Contains(item) ? "selected-row" : "")">
+                    @if (EditMode != NexusTableGridEditMode.None && EditedItem.Contains(item))
+                    {
+                        <CascadingValue Value="item">
+                            @EditColumns(item)
+                        </CascadingValue>
+                    }
+                    else
+                    {
+                        <CascadingValue Value="item">
+                            @Columns
+                        </CascadingValue>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

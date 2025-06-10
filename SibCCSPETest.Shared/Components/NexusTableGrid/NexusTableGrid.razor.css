@@ -1,0 +1,18 @@
+﻿::deep .table > tbody > tr:hover > * {
+    background-color: var(--bs-body-bg) !important;
+    color: black !important;
+}
+
+::deep .table > tbody > tr.selected-row > * {
+    background-color: var(--bs-primary) !important;
+    color: white !important;
+    border-top: 1px solid var(--bs-primary-border-subtle) !important;
+    border-bottom: 1px solid var(--bs-primary-border-subtle) !important;
+}
+
+::deep .table > tbody > tr.selected-row:hover > * {
+    background-color: var(--bs-primary) !important;
+    color: white !important;
+    border-top: 1px solid var(--bs-primary-border-subtle) !important;
+    border-bottom: 1px solid var(--bs-primary-border-subtle) !important;
+}
