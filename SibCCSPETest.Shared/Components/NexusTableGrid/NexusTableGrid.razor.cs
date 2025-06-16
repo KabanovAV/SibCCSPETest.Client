@@ -110,40 +110,15 @@ namespace SibCCSPETest.Shared.Components
 
         public void CancelEditRow(TItem item)
         {
-            if (IsInsertMode)
-            {
-                Data.Remove(item);
-                SelectedRows.Remove(item);
-            }
-            ResetRow(item);
-        }
-
-        public void ResetRow(TItem item)
-        {
             if (EditedItem.Contains(item))
             {
                 EditedItem.Remove(item);
                 IsEditMode = EditedItem.Count == 0 ? false : true;
             }
-            if (InsertItem.Contains(item))
-            {
-                InsertItem.Remove(item);
-                IsInsertMode = InsertItem.Count == 0 ? false : true;
-            }
         }
 
         public async Task Reload()
         {
-            if (IsInsertMode)
-            {
-                foreach (var item in InsertItem)
-                    Data.Remove(item);
-            }
-            else if (IsEditMode)
-            {
-                foreach (var item in EditedItem)
-                    Data.Remove(item);
-            }
             InsertItem.Clear();
             EditedItem.Clear();
             IsInsertMode = false;

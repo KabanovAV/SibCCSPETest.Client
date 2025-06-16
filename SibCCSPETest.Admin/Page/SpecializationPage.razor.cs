@@ -62,7 +62,7 @@ namespace SibCCSPETest.Admin.Page
                 await Update(Specialization);
             else
                 await Add(Specialization);
-            NexusTable.CancelEditRow(Specialization);
+            await NexusTable.Reload();
         }
 
         public async Task Add(SpecializationDTO item)
@@ -71,13 +71,14 @@ namespace SibCCSPETest.Admin.Page
             if (Specialization != null)
             {
                 NexusTable!.Data.Add(Specialization);
-                await NexusTable.SelectRow(Specialization);
+                await NexusTable.SelectRow(Specialization);                
             }
         }
 
         public async Task Update(SpecializationDTO item)
         {
             await ServiceAPI!.SpecializationService.UpdateSpecialization(item);
+            NexusTable.CancelEditRow(Specialization);
         }
 
         public async Task Delete()
