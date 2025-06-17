@@ -5,17 +5,17 @@ using SibCCSPETest.Shared.Components;
 
 namespace SibCCSPETest.Admin.Page
 {
-    public partial class SpecializationPage
+    public partial class TopicPage
     {
         [Inject]
         public IAPIService? ServiceAPI { get; set; }
 
-        private NexusTableGrid<SpecializationDTO>? NexusTable;
+        private NexusTableGrid<TopicDTO>? NexusTable;
         private NexusTableGridEditMode EditMode = NexusTableGridEditMode.Single;
         private NexusTableGridSelectionMode SelectMode = NexusTableGridSelectionMode.Single;
 
-        private List<SpecializationDTO> Items = [];
-        private SpecializationDTO? Data = new();
+        private List<TopicDTO> Items = [];
+        private TopicDTO? Data = new();
 
         public bool IsCrud => NexusTable != null
             && (NexusTable.InsertItem.Count > 0 || NexusTable.EditedItem.Count > 0);
@@ -28,12 +28,12 @@ namespace SibCCSPETest.Admin.Page
 
         private async Task LoadData()
         {
-            var s = await ServiceAPI!.SpecializationService.GetAllSpecialization();
-            Items = s.ToList();
+            var t = await ServiceAPI!.TopicService.GetAllTopic();
+            Items = t.ToList();
         }
 
         public async Task InserRow()
-            => await NexusTable!.InsertRow(new SpecializationDTO());
+            => await NexusTable!.InsertRow(new TopicDTO());
 
         public void EditRow()
         {
@@ -65,9 +65,9 @@ namespace SibCCSPETest.Admin.Page
             await NexusTable.Reload();
         }
 
-        public async Task Add(SpecializationDTO item)
+        public async Task Add(TopicDTO item)
         {
-            Data = await ServiceAPI!.SpecializationService.AddSpecialization(item);
+            Data = await ServiceAPI!.TopicService.AddTopic(item);
             if (Data != null)
             {
                 NexusTable!.Data.Add(Data);
@@ -75,9 +75,9 @@ namespace SibCCSPETest.Admin.Page
             }
         }
 
-        public async Task Update(SpecializationDTO item)
+        public async Task Update(TopicDTO item)
         {
-            await ServiceAPI!.SpecializationService.UpdateSpecialization(item);
+            await ServiceAPI!.TopicService.UpdateTopic(item);
             NexusTable.CancelEditRow(Data);
         }
 
@@ -86,7 +86,7 @@ namespace SibCCSPETest.Admin.Page
             if (NexusTable != null && NexusTable.SelectedRows.Count != 0)
             {
                 Data = NexusTable.SelectedRows.First();
-                await ServiceAPI!.SpecializationService.DeleteSpecialization(Data.Id);
+                await ServiceAPI!.TopicService.DeleteTopic(Data.Id);
                 NexusTable.RemoveRow(Data);
             }
         }

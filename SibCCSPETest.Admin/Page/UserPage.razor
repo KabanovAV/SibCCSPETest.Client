@@ -1,0 +1,46 @@
+﻿@page "/admin/user"
+@layout AdminLayout
+@rendermode InteractiveServer
+
+<NexusTableGrid @ref="NexusTable" TItem="UserDTO" Data="Items" SelectionMode="SelectMode"
+                EditMode="EditMode">
+    <ToolTemplate>
+        <div class="mb-1">
+            <NexusGroupButton>
+                <NexusButton Title="Добавить" OnClick="InserRow" CssClass="btn-primary" IconClass="bi bi-plus-lg" Disable="IsCrud" />
+                <NexusButton Title="Изменить" OnClick="EditRow" CssClass="btn-warning" IconClass="bi bi-pencil-fill" Disable="IsCrud" />
+                <NexusButton Title="Удалить" OnClick="Delete" CssClass="btn-danger" IconClass="bi bi-trash3-fill" Disable="IsCrud" />
+            </NexusGroupButton>
+            <NexusGroupButton>
+                <NexusButton Title="Сохранить" OnClick="Save" CssClass="btn-success" IconClass="bi bi-floppy-fill" Disable="IsSaveCancel" />
+                <NexusButton Title="Отменить" OnClick="Cancel" CssClass="btn-danger" IconClass="bi bi-x-lg" Disable="IsSaveCancel" />
+            </NexusGroupButton>
+        </div>
+    </ToolTemplate>
+    <Columns>
+        <NexusTableGridColumn Title="Id" Property="Id" />
+        <NexusTableGridColumn Title="ФИО" Property="FullName" />
+        <NexusTableGridColumn Title="Логин" Property="Login" />
+        <NexusTableGridColumn Title="Пароль" Property="Password" />
+        <NexusTableGridColumn Title="Организация" Property="Organization" />
+        <NexusTableGridColumn Title="Позиция" Property="Position" />
+    </Columns>
+    <EditColumns>
+        <NexusTableGridColumn Title="Id" Property="Id" />
+        <NexusTableGridColumn Title="ФИО" Property="FullName">
+            <input class="border border-black" type="text" @bind="context.FullName" />
+        </NexusTableGridColumn>
+        <NexusTableGridColumn Title="Логин" Property="Login">
+            <input class="border border-black" type="text" @bind="context.Login" />
+        </NexusTableGridColumn>
+        <NexusTableGridColumn Title="Пароль" Property="Password">
+            <input class="border border-black" type="text" @bind="context.Password" />
+        </NexusTableGridColumn>
+        <NexusTableGridColumn Title="Организация" Property="Organization">
+            <input class="border border-black" type="text" @bind="context.Organization" />
+        </NexusTableGridColumn>
+        <NexusTableGridColumn Title="Позиция" Property="Position">
+            <input class="border border-black" type="text" @bind="context.Position" />
+        </NexusTableGridColumn>
+    </EditColumns>
+</NexusTableGrid>

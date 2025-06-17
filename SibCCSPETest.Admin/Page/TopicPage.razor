@@ -1,8 +1,8 @@
-﻿@page "/admin/specialization"
+﻿@page "/admin/topic"
 @layout AdminLayout
 @rendermode InteractiveServer
 
-<NexusTableGrid @ref="NexusTable" TItem="SpecializationDTO" Data="Items" SelectionMode="SelectMode"
+<NexusTableGrid @ref="NexusTable" TItem="TopicDTO" Data="Items" SelectionMode="SelectMode"
                 EditMode="EditMode">
     <ToolTemplate>
         <div class="mb-1">
@@ -20,11 +20,15 @@
     <Columns>
         <NexusTableGridColumn Title="Id" Property="Id" />
         <NexusTableGridColumn Title="Название" Property="Title" />
+        <NexusTableGridColumn Title="Специализация" Property="SpecializationId" />
     </Columns>
     <EditColumns>
         <NexusTableGridColumn Title="Id" Property="Id" />
         <NexusTableGridColumn Title="Название">
             <input class="border border-black" type="text" @bind="context.Title" />
+        </NexusTableGridColumn>
+        <NexusTableGridColumn Title="Специализация" Property="SpecializationId">
+            <input class="border border-black" type="text" @bind="context.SpecializationId" />
         </NexusTableGridColumn>
     </EditColumns>
 </NexusTableGrid>
