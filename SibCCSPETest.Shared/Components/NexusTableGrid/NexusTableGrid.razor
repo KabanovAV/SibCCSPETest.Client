@@ -22,6 +22,14 @@
             </tr>
         </thead>
         <tbody>
+            @if (IsTableEmpty)
+            {
+                <tr>
+                    <td colspan="8">
+                        <h3>@EmptyMessage</h3>
+                    </td>
+                </tr>
+            }
             @foreach (var item in Data.Concat(InsertItem))
             {
                 <tr @onclick="() => SelectRow(item)" class="@(SelectedRows.Contains(item) ? "selected-row" : "")">

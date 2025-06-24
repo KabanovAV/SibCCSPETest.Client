@@ -14,16 +14,21 @@ namespace SibCCSPETest.Admin.Page
         private NexusTableGridEditMode EditMode = NexusTableGridEditMode.Single;
         private NexusTableGridSelectionMode SelectMode = NexusTableGridSelectionMode.Single;
 
-        private List<SpecializationDTO> Items = [];
+        private List<SpecializationDTO>? Items;
         private SpecializationDTO? Data = new();
 
         public bool IsCrud => NexusTable != null
             && (NexusTable.InsertItem.Count > 0 || NexusTable.EditedItem.Count > 0);
+        public bool IsSelected => IsCrud || !NexusTable.IsRowsSelected();
         public bool IsSaveCancel => !IsCrud;
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await LoadData();
+            if (firstRender)
+            {
+                await LoadData();
+                await InvokeAsync(StateHasChanged);
+            }
         }
 
         private async Task LoadData()
@@ -71,7 +76,7 @@ namespace SibCCSPETest.Admin.Page
             if (Data != null)
             {
                 NexusTable!.Data.Add(Data);
-                await NexusTable.SelectRow(Data);                
+                await NexusTable.SelectRow(Data);
             }
         }
 

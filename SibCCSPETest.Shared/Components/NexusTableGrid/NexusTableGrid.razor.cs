@@ -25,7 +25,7 @@ namespace SibCCSPETest.Shared.Components
         [Parameter]
         public EventCallback OnSelectRow { get; set; }
 
-        private bool IsTableEmpty;
+        private bool IsTableEmpty => Data.Count == 0 && InsertItem.Count == 0;
         private List<NexusTableGridColumn<TItem>> _items = [];
         public List<NexusTableGridColumn<TItem>> Items
         {
@@ -40,12 +40,6 @@ namespace SibCCSPETest.Shared.Components
         private bool IsInsertMode { get; set; }
         private bool IsEditMode { get; set; }
         private bool IsHasItems => Items.Count > 0 || InsertItem.Count > 0;
-
-        protected override void OnParametersSet()
-        {
-            base.OnParametersSet();
-            IsTableEmpty = _items.All(x => !x.Visible);
-        }
 
         public void AddItem(NexusTableGridColumn<TItem> item)
         {
@@ -114,6 +108,12 @@ namespace SibCCSPETest.Shared.Components
             {
                 EditedItem.Remove(item);
                 IsEditMode = EditedItem.Count == 0 ? false : true;
+            }
+            if (InsertItem.Contains(item))
+            {
+                SelectedRows.Remove(item);
+                InsertItem.Remove(item);
+                IsInsertMode = InsertItem.Count == 0 ? false : true;
             }
         }
 
