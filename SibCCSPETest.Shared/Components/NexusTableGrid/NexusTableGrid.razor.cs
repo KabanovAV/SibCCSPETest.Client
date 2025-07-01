@@ -19,21 +19,27 @@ namespace SibCCSPETest.Shared.Components
         [Parameter]
         public RenderFragment<TItem>? EditColumns { get; set; }
         [Parameter]
+        public RenderFragment<TItem>? ExpandRow { get; set; }
+        [Parameter]
         public NexusTableGridSelectionMode SelectionMode { get; set; }
+        [Parameter]
+        public NexusTableGridExpandMode ExpandMode { get; set; }
         [Parameter]
         public NexusTableGridEditMode EditMode { get; set; }
         [Parameter]
         public EventCallback OnSelectRow { get; set; }
 
-        private bool IsTableEmpty => Data.Count == 0 && InsertItem.Count == 0;
+        private bool IsTableEmpty => (Data is null || Data.Count == 0) && InsertItem.Count == 0;
         private List<NexusTableGridColumn<TItem>> _items = [];
         public List<NexusTableGridColumn<TItem>> Items
         {
             get => _items;
             set => _items = value;
         }
+        private int CountOfItems => ExpandMode != NexusTableGridExpandMode.None ? Items.Count + 1 : Items.Count;
 
         public List<TItem> SelectedRows { get; set; } = [];
+        public List<TItem> ExpandedRows { get; set; } = [];
         public List<TItem> InsertItem { get; set; } = [];
         public List<TItem> EditedItem { get; set; } = [];
 
@@ -67,11 +73,29 @@ namespace SibCCSPETest.Shared.Components
             await OnSelectRow.InvokeAsync();
         }
 
-        public bool IsRowsSelected()
+        public bool IsRowsSelected
             => SelectedRows.Count != 0;
 
         public bool IsRowSelected(TItem item)
             => SelectedRows.Contains(item);
+
+        public async Task OnExpandRow(TItem item)
+        {
+            if (ExpandedRows.Contains(item))
+                ExpandedRows.Remove(item);
+            else
+            {
+                if (ExpandMode == NexusTableGridExpandMode.Single)
+                {
+                    ExpandedRows.Clear();
+                    ExpandedRows?.Add(item);
+                }
+                else
+                    ExpandedRows.Add(item);
+            }
+
+            await OnSelectRow.InvokeAsync();
+        }
 
         public async Task InsertRow(TItem item)
         {
@@ -102,7 +126,7 @@ namespace SibCCSPETest.Shared.Components
             SelectedRows.Remove(item);
         }
 
-        public void CancelEditRow(TItem item)
+        public async Task CancelEditRow(TItem item)
         {
             if (EditedItem.Contains(item))
             {
@@ -111,8 +135,11 @@ namespace SibCCSPETest.Shared.Components
             }
             if (InsertItem.Contains(item))
             {
-                SelectedRows.Remove(item);
                 InsertItem.Remove(item);
+                if (EditMode == NexusTableGridEditMode.Multiple && InsertItem.Count > 0)
+                    await SelectRow(InsertItem.Last());
+                else
+                    SelectedRows.Remove(item);
                 IsInsertMode = InsertItem.Count == 0 ? false : true;
             }
         }

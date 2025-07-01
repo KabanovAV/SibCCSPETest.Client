@@ -15,11 +15,10 @@ namespace SibCCSPETest.Admin.Page
         private NexusTableGridSelectionMode SelectMode = NexusTableGridSelectionMode.Single;
 
         private List<QuestionDTO>? Items;
-        private QuestionDTO? Data = new();
 
         public bool IsCrud => NexusTable != null
             && (NexusTable.InsertItem.Count > 0 || NexusTable.EditedItem.Count > 0);
-        public bool IsSelected => IsCrud || !NexusTable.IsRowsSelected();
+        public bool IsSelected => IsCrud || !NexusTable.IsRowsSelected;
         public bool IsSaveCancel => !IsCrud;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -45,7 +44,7 @@ namespace SibCCSPETest.Admin.Page
             if (NexusTable != null && NexusTable.SelectedRows.Count != 0)
             {
                 if (EditMode == NexusTableGridEditMode.Multiple
-                && SelectMode == NexusTableGridSelectionMode.Multiple)
+                    && SelectMode == NexusTableGridSelectionMode.Multiple)
                 {
                     foreach (var selectRow in NexusTable.SelectedRows)
                     {
@@ -54,52 +53,65 @@ namespace SibCCSPETest.Admin.Page
                 }
                 else
                 {
-                    Data = NexusTable.SelectedRows.First();
-                    NexusTable.EditRow(Data);
+                    var data = NexusTable.SelectedRows.First();
+                    NexusTable.EditRow(data);
                 }
             }
         }
 
         public async Task Save()
         {
-            Data = NexusTable!.EditedItem.First();
-            if (Data.Id != 0)
-                await Update(Data);
+            if (NexusTable!.InsertItem.Count == 0 && NexusTable!.EditedItem.Count > 0)
+            {
+                var data = NexusTable!.EditedItem.First();
+                await Update(data);
+            }
             else
-                await Add(Data);
+            {
+                var data = NexusTable!.InsertItem.First();
+                await Add(data);
+            }
             await NexusTable.Reload();
         }
 
         public async Task Add(QuestionDTO item)
         {
-            Data = await ServiceAPI!.QuestionService.AddQuestion(item);
-            if (Data != null)
+            var data = await ServiceAPI!.QuestionService.AddQuestion(item);
+            if (data != null)
             {
-                NexusTable!.Data.Add(Data);
-                await NexusTable.SelectRow(Data);                
+                NexusTable!.Data.Add(data);
+                await NexusTable.SelectRow(data);
+                await NexusTable.OnExpandRow(data);
             }
         }
 
         public async Task Update(QuestionDTO item)
         {
-            await ServiceAPI!.QuestionService.UpdateQuestion(item);
-            NexusTable.CancelEditRow(Data);
+            var data = await ServiceAPI!.QuestionService.UpdateQuestion(item);
+            if (data != null)
+            {
+                var index = NexusTable!.Data.FindIndex(s => s.Id == data.Id);
+                if (index >= 0)
+                    NexusTable.Data[index] = data;
+                await NexusTable.SelectRow(data);
+                await NexusTable.CancelEditRow(data);
+            }
         }
 
         public async Task Delete()
         {
             if (NexusTable != null && NexusTable.SelectedRows.Count != 0)
             {
-                Data = NexusTable.SelectedRows.First();
-                await ServiceAPI!.QuestionService.DeleteQuestion(Data.Id);
-                NexusTable.RemoveRow(Data);
+                var data = NexusTable.SelectedRows.First();
+                await ServiceAPI!.QuestionService.DeleteQuestion(data.Id);
+                NexusTable.RemoveRow(data);
             }
         }
 
-        public void Cancel()
+        public async Task Cancel()
         {
-            Data = NexusTable!.SelectedRows.First();
-            NexusTable.CancelEditRow(Data);
+            var data = NexusTable!.SelectedRows.First();
+            await NexusTable.CancelEditRow(data);
         }
     }
 }

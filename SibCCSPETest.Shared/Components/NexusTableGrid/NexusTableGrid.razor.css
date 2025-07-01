@@ -1,5 +1,5 @@
-﻿::deep .table > tbody > tr:hover > * {
-    background-color: var(--bs-body-bg) !important;
+﻿::deep .table > tbody > tr:hover:not(.selected-row):not(.empty-message):not(.expand-row) > * {
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.075) !important;
     color: black !important;
 }
 

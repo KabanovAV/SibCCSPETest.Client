@@ -16,7 +16,7 @@
 else
 {
     <NexusTableGrid @ref="NexusTable" TItem="QuestionDTO" Data="Items" SelectionMode="SelectMode"
-                    EditMode="EditMode" EmptyMessage="Нет вопросов">
+                    EditMode="EditMode" EmptyMessage="Нет вопросов" ExpandMode="NexusTableGridExpandMode.Single">
         <ToolTemplate>
             <div class="mb-1">
                 <NexusGroupButton>
@@ -37,8 +37,11 @@ else
         <EditColumns>
             <NexusTableGridColumn Title="Id" Property="Id" />
             <NexusTableGridColumn Title="Название">
-                <input class="border border-black" type="text" @bind="context.Title" />
+                <input class="form-control border border-black" type="text" @bind="context.Title" />
             </NexusTableGridColumn>
         </EditColumns>
+        <ExpandRow>
+            <AnswerView Items="@context.AnswerItems" QuestionId="@context.Id" />
+        </ExpandRow>
     </NexusTableGrid>
 }
