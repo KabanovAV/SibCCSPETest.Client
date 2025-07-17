@@ -1,0 +1,19 @@
+﻿@namespace SibCCSPETest.Shared.Components
+
+<div class="nexus-notification @Instance.Setting.BaseClass @Instance.Setting.AdditionalClasses">
+    @if (!string.IsNullOrWhiteSpace(Instance.Setting.IconClass))
+    {
+        <div class="nexus-notification-icon">
+            <i class="@Instance.Setting.IconClass" aria-hidden="true"></i>
+        </div>
+    }
+    <div class="nexus-notification-body">
+        <div class="nexus-notification-header">
+            <h5 class="nexus-notification-heading">@Instance.Setting.Heading</h5>
+            <button class="nexus-notification-close" @onclick=@Close>
+                <i class="nexus-notification-close-icon bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="nexus-notification-message">@Instance.Setting.Message</div>
+    </div>
+</div>

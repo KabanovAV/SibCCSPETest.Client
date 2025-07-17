@@ -1,0 +1,13 @@
+﻿@namespace SibCCSPETest.Shared.Components
+
+@if (NotificationItems.Any())
+{
+    <div class="nexus-notification-container @PositionClass">
+        <CascadingValue Value="this">
+            @foreach (var notification in NotificationItems.OrderBy(x => x.TimeStamp))
+            {
+                <NexusNotification Instance="notification" />
+            }
+        </CascadingValue>
+    </div>
+}

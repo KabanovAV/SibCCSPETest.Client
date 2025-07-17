@@ -1,25 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BlazorPro.Spinkit" Version="1.2.0" />
-    <PackageReference Include="MudBlazor" Version="8.7.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="BlazorPro.Spinkit" Version="1.2.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\SibCCSPETest.ServiceBase\SibCCSPETest.ServiceBase.Server\SibCCSPETest.ServiceBase.Server.csproj" />
-    <ProjectReference Include="..\SibCCSPETest.Admin\SibCCSPETest.Admin.csproj" />
-    <ProjectReference Include="..\SibCCSPETest.User\SibCCSPETest.User.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\SibCCSPETest.ServiceBase\SibCCSPETest.ServiceBase.Server\SibCCSPETest.ServiceBase.Server.csproj" />
+		<ProjectReference Include="..\SibCCSPETest.Admin\SibCCSPETest.Admin.csproj" />
+		<ProjectReference Include="..\SibCCSPETest.Shared\SibCCSPETest.Shared.csproj" />
+		<ProjectReference Include="..\SibCCSPETest.User\SibCCSPETest.User.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\bootstrap\dist\" />
-    <Folder Include="wwwroot\lib\bootstrap-icons\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\lib\bootstrap\dist\" />
+		<Folder Include="wwwroot\lib\bootstrap-icons\" />
+	</ItemGroup>
 
 </Project>

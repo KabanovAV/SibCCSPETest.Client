@@ -9,6 +9,10 @@ namespace SibCCSPETest.Admin.Page
     {
         [Inject]
         public IAPIService? ServiceAPI { get; set; }
+        [Inject]
+        public INexusNotificationService? NotificationService { get; set; }
+        [Inject]
+        public INexusDialogService? DialogService { get; set; }
 
         private NexusTableGrid<UserDTO>? NexusTable;
         private NexusTableGridEditMode EditMode = NexusTableGridEditMode.Single;
@@ -80,7 +84,8 @@ namespace SibCCSPETest.Admin.Page
             if (data != null)
             {
                 NexusTable!.Data.Add(data);
-                await NexusTable.SelectRow(data);                
+                await NexusTable.SelectRow(data);
+                NotificationService.ShowSuccess("Пользователь добавлен", "Успех");
             }
         }
 
@@ -94,6 +99,7 @@ namespace SibCCSPETest.Admin.Page
                     NexusTable.Data[index] = data;
                 await NexusTable.SelectRow(data);
                 await NexusTable.CancelEditRow(data);
+                NotificationService.ShowSuccess("Пользователь изменен", "Успех");
             }
         }
 
@@ -102,8 +108,14 @@ namespace SibCCSPETest.Admin.Page
             if (NexusTable != null && NexusTable.SelectedRows.Count != 0)
             {
                 var data = NexusTable.SelectedRows.First();
-                await ServiceAPI!.UserService.DeleteUser(data.Id);
-                NexusTable.RemoveRow(data);
+                var settings = new NexusDialogSetting("Удаление пользователя", $"Вы уверены, что хотите удалить \"{data.FullName}\" пользователя?", "Отменить", "Удалить");
+                var result = await DialogService.Show(settings);
+                if (result?.Canceled == false)
+                {
+                    await ServiceAPI!.UserService.DeleteUser(data.Id);
+                    NexusTable.RemoveRow(data);
+                    NotificationService.ShowSuccess("Пользователь удален", "Успех");
+                }
             }
         }
 

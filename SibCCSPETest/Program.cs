@@ -1,6 +1,5 @@
-using MudBlazor.Services;
-using SibCCSPETest.ServiceBase;
-using System.Net.Http.Headers;
+using SibCCSPETest.Shared;
+using SibCCSPETest.Shared.Services;
 
 namespace SibCCSPETest
 {
@@ -12,15 +11,10 @@ namespace SibCCSPETest
 
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
-            builder.Services.AddMudServices();
 
-            builder.Services.AddHttpClient("HttpClient", client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:7183");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            });
-
-            builder.Services.AddScoped<IAPIService, APIService>();
+            builder.Services.ConfigureHttpClient();
+            builder.Services.ConfigureAPI();
+            builder.Services.AddNexusBlazor();
 
             var app = builder.Build();
             if (!app.Environment.IsDevelopment())

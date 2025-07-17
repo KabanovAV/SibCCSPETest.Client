@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorPro.Spinkit" Version="1.2.0" />
-    <PackageReference Include="MudBlazor" Version="8.7.0" />
   </ItemGroup>
 
   <ItemGroup>
